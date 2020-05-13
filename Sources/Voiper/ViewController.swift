@@ -1,5 +1,3 @@
-#if canImport(UIKit)
-
 import UIKit
 
 typealias TableViewController = TableViewControllerClass & ViewControllerType & StoryboardInstantiable
@@ -45,5 +43,3 @@ extension ViewControllerType {
         return (_presenter as! PresenterType)
     }
 }
-
-#endif

@@ -1,4 +1,3 @@
-#if canImport(UIKit)
 
 typealias Presenter = PresenterClass & PresenterType & Injectable
 class PresenterClass: PresenterProtocol {
@@ -50,5 +49,3 @@ extension PresenterType {
         return (_router as! RouterType)
     }
 }
-
-#endif

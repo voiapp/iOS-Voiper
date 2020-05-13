@@ -1,4 +1,4 @@
-#if canImport(UIKit)
+import UIKit
 
 protocol Injectable {
     associatedtype Configuration
@@ -105,5 +105,3 @@ extension Organiser where Presenter.Configuration == Void, Interactor.Configurat
                             router: Router.init(configuration: ()))
     }
 }
-
-#endif

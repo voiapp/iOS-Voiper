@@ -1,4 +1,4 @@
-#if canImport(UIKit)
+import UIKit
 
 typealias Router = RouterClass & Injectable
 class RouterClass: RouterProtocol {
@@ -13,5 +13,3 @@ protocol RouterProtocol: class {
     var viewController: UIViewController! {get set}
     func set(viewController: UIViewController)
 }
-
-#endif
