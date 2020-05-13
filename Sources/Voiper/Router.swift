@@ -15,3 +15,9 @@ public protocol RouterProtocol: class {
     var viewController: UIViewController! {get set}
     func set(viewController: UIViewController)
 }
+
+public extension RouterProtocol {
+    func set(viewController: UIViewController) {
+        self.viewController = viewController
+    }
+}

@@ -27,6 +27,12 @@ public protocol PresenterProtocol {
     func set(router: RouterProtocol)
 }
 
+public extension PresenterProtocol {
+    func set(viewDelegate: ViewControllerProtocol) {}
+    func set(interactor: InteractorProtocol) {}
+    func set(router: RouterProtocol) {}
+}
+
 public protocol PresenterType {
     associatedtype ViewDelegateType
     associatedtype InteractorType

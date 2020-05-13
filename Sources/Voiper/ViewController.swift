@@ -22,6 +22,10 @@ public protocol ViewControllerProtocol: class {
     func set(presenter: PresenterProtocol)
 }
 
+public extension ViewControllerProtocol {
+    func set(presenter: PresenterProtocol) {}
+}
+
 public protocol ViewControllerType {
     associatedtype PresenterType
     var _presenter: PresenterProtocol? {get}
