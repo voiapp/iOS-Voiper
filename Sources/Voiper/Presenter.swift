@@ -1,30 +1,33 @@
 
-typealias Presenter = PresenterClass & PresenterType & Injectable
-class PresenterClass: PresenterProtocol {
-    weak var _viewDelegate: ViewControllerProtocol?
-    var _interactor: InteractorProtocol?
-    var _router: RouterProtocol?
+public typealias Presenter = PresenterClass & PresenterType & Injectable
+open class PresenterClass: PresenterProtocol {
+    public weak var _viewDelegate: ViewControllerProtocol?
+    public var _interactor: InteractorProtocol?
+    public var _router: RouterProtocol?
     
-    func set(viewDelegate: ViewControllerProtocol) {
+    public func set(viewDelegate: ViewControllerProtocol) {
         self._viewDelegate = viewDelegate
     }
     
-    func set(interactor: InteractorProtocol) {
+    public func set(interactor: InteractorProtocol) {
         self._interactor = interactor
     }
     
-    func set(router: RouterProtocol) {
+    public func set(router: RouterProtocol) {
         self._router = router
+    }
+    
+    public init() {
     }
 }
 
-protocol PresenterProtocol {
+public protocol PresenterProtocol {
     func set(viewDelegate: ViewControllerProtocol)
     func set(interactor: InteractorProtocol)
     func set(router: RouterProtocol)
 }
 
-protocol PresenterType {
+public protocol PresenterType {
     associatedtype ViewDelegateType
     associatedtype InteractorType
     associatedtype RouterType
@@ -36,7 +39,7 @@ protocol PresenterType {
     var router: RouterType {get}
 }
 
-extension PresenterType {
+public extension PresenterType {
     var viewDelegate: ViewDelegateType {
         return (_viewDelegate as! ViewDelegateType)
     }

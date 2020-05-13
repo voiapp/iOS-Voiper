@@ -1,6 +1,9 @@
 
-typealias Interactor = InteractorClass & Injectable
+public typealias Interactor = InteractorClass & Injectable
 
-class InteractorClass: InteractorProtocol {}
+open class InteractorClass: InteractorProtocol {
+    public init() {
+    }
+}
 
-protocol InteractorProtocol {}
+public protocol InteractorProtocol {}

@@ -1,15 +1,17 @@
 import UIKit
 
-typealias Router = RouterClass & Injectable
-class RouterClass: RouterProtocol {
-    weak var viewController: UIViewController!
+public typealias Router = RouterClass & Injectable
+open class RouterClass: RouterProtocol {
+    public weak var viewController: UIViewController!
     
-    func set(viewController: UIViewController) {
+    public func set(viewController: UIViewController) {
         self.viewController = viewController
+    }
+    public init() {
     }
 }
 
-protocol RouterProtocol: class {
+public protocol RouterProtocol: class {
     var viewController: UIViewController! {get set}
     func set(viewController: UIViewController)
 }

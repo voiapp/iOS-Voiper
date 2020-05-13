@@ -1,44 +1,34 @@
 import UIKit
 
-typealias TableViewController = TableViewControllerClass & ViewControllerType & StoryboardInstantiable
-class TableViewControllerClass: UITableViewController, ViewControllerProtocol {
-    var _presenter: PresenterProtocol?
+public typealias TableViewController = TableViewControllerClass & ViewControllerType & StoryboardInstantiable
+open class TableViewControllerClass: UITableViewController, ViewControllerProtocol {
+    public var _presenter: PresenterProtocol?
     
-    func set(presenter: PresenterProtocol) {
+    public func set(presenter: PresenterProtocol) {
         self._presenter = presenter
     }
 }
 
-typealias ViewController = ViewControllerClass & ViewControllerType & StoryboardInstantiable
-class ViewControllerClass: UIViewController, ViewControllerProtocol {
-    var _presenter: PresenterProtocol?
+public typealias ViewController = ViewControllerClass & ViewControllerType & StoryboardInstantiable
+open class ViewControllerClass: UIViewController, ViewControllerProtocol {
+    public var _presenter: PresenterProtocol?
     
-    func set(presenter: PresenterProtocol) {
+    public func set(presenter: PresenterProtocol) {
         self._presenter = presenter
     }
-    
-    override var preferredStatusBarStyle: UIStatusBarStyle {
-        return .lightContent
-    }
 }
 
-protocol Parentable {
-    associatedtype ChildIdentifier
-    func addChildViewController(viewController: UIViewController, for identifier: ChildIdentifier)
-    func removeChildViewController(for identifier: ChildIdentifier)
-}
-
-protocol ViewControllerProtocol: class {
+public protocol ViewControllerProtocol: class {
     func set(presenter: PresenterProtocol)
 }
 
-protocol ViewControllerType {
+public protocol ViewControllerType {
     associatedtype PresenterType
     var _presenter: PresenterProtocol? {get}
     var presenter: PresenterType {get}
 }
 
-extension ViewControllerType {
+public extension ViewControllerType {
     var presenter: PresenterType {
         return (_presenter as! PresenterType)
     }
