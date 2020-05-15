@@ -1,3 +1,3 @@
 # Voiper
 
-A description of this package.
+The VIPER framework used for building the iOS apps at Voi
