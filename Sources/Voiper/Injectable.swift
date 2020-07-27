@@ -9,3 +9,9 @@ public protocol Injectable {
     associatedtype Configuration
     init(configuration: Configuration)
 }
+
+extension Injectable where Configuration == Void {
+    init() {
+        self.init(configuration: ())
+    }
+}
