@@ -1,10 +1,5 @@
 import UIKit
 
-public protocol Injectable {
-    associatedtype Configuration
-    init(configuration: Configuration)
-}
-
 public protocol StoryboardInstantiable: UIViewController {
     static var storyboardName: String { get }
     static var viewControllerName: String { get }
