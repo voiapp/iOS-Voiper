@@ -1,6 +1,10 @@
 import UIKit
 
-public protocol StoryboardInstantiable: UIViewController {
+public protocol Instantiable {
+    static func instantiate()
+}
+
+public protocol StoryboardInstantiable: UIViewController, Instantiable {
     static var storyboardName: String { get }
     static var viewControllerName: String { get }
     static func instantiateFromStoryboard() -> Self
@@ -14,6 +18,10 @@ public extension StoryboardInstantiable {
     }
     static var viewControllerName: String {
         String(describing: Self.self)
+    }
+    
+    public static func instantiate() {
+        return instantiateFromStoryboard()
     }
 }
 
