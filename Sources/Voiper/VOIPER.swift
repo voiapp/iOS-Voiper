@@ -17,8 +17,23 @@ public extension StoryboardInstantiable {
     }
 }
 
+public enum ViewControllerInitMethod {
+    case storyboard
+    case code
+}
+
+public protocol ViewControllerInitProtocol: class {
+    static var initMethod: ViewControllerInitMethod { get }
+}
+
+extension ViewControllerInitProtocol {
+    public static var initMethod: ViewControllerInitMethod {
+        return .storyboard
+    }
+}
+
 public protocol Organiser {
-    associatedtype ViewController: ViewControllerProtocol & StoryboardInstantiable
+    associatedtype ViewController: ViewControllerProtocol & StoryboardInstantiable & ViewControllerInitProtocol
     associatedtype Interactor: InteractorProtocol & Injectable
     associatedtype Presenter: PresenterProtocol & Injectable
     associatedtype Router: RouterProtocol & Injectable
@@ -32,7 +47,7 @@ extension Organiser {
     }
     
     private static func wireUpModule(presenter: Presenter, interactor: Interactor, router: Router) -> ViewController {
-        let viewController = ViewController.instantiateFromStoryboard()
+        let viewController = ViewController.initMethod == .storyboard ? ViewController.instantiateFromStoryboard() : ViewController()
         presenter.set(viewDelegate: viewController)
         presenter.set(router: router)
         presenter.set(interactor: interactor)
