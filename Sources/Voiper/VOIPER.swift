@@ -1,10 +1,16 @@
 import UIKit
 
-public protocol Instantiable {
-    static func instantiate()
+public protocol Instantiable: UIViewController {
+    static func instantiate() -> Self
 }
 
-public protocol StoryboardInstantiable: UIViewController, Instantiable {
+public extension Instantiable {
+    static func instantiate() -> Self {
+        return Self.init()
+    }
+}
+
+public protocol StoryboardInstantiable: Instantiable {
     static var storyboardName: String { get }
     static var viewControllerName: String { get }
     static func instantiateFromStoryboard() -> Self
@@ -20,13 +26,13 @@ public extension StoryboardInstantiable {
         String(describing: Self.self)
     }
     
-    public static func instantiate() {
+    static func instantiate() -> Self {
         return instantiateFromStoryboard()
     }
 }
 
 public protocol Organiser {
-    associatedtype ViewController: ViewControllerProtocol & StoryboardInstantiable
+    associatedtype ViewController: ViewControllerProtocol & Instantiable
     associatedtype Interactor: InteractorProtocol & Injectable
     associatedtype Presenter: PresenterProtocol & Injectable
     associatedtype Router: RouterProtocol & Injectable
@@ -40,7 +46,7 @@ extension Organiser {
     }
     
     private static func wireUpModule(presenter: Presenter, interactor: Interactor, router: Router) -> ViewController {
-        let viewController = ViewController.instantiateFromStoryboard()
+        let viewController = ViewController.instantiate()
         presenter.set(viewDelegate: viewController)
         presenter.set(router: router)
         presenter.set(interactor: interactor)
