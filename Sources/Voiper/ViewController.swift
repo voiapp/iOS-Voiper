@@ -1,6 +1,6 @@
 import UIKit
 
-public typealias TableViewController = TableViewControllerClass & ViewControllerType & StoryboardInstantiable
+public typealias TableViewController = TableViewControllerClass & ViewControllerType & Instantiable
 open class TableViewControllerClass: UITableViewController, ViewControllerProtocol {
     public var _presenter: PresenterProtocol?
     
@@ -9,7 +9,7 @@ open class TableViewControllerClass: UITableViewController, ViewControllerProtoc
     }
 }
 
-public typealias ViewController = ViewControllerClass & ViewControllerType & StoryboardInstantiable
+public typealias ViewController = ViewControllerClass & ViewControllerType & Instantiable
 open class ViewControllerClass: UIViewController, ViewControllerProtocol {
     public var _presenter: PresenterProtocol?
     
