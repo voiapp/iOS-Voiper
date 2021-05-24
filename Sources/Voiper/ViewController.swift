@@ -18,7 +18,7 @@ open class ViewControllerClass: UIViewController, ViewControllerProtocol {
     }
 }
 
-public protocol ViewControllerProtocol: class {
+public protocol ViewControllerProtocol: AnyObject {
     func set(presenter: PresenterProtocol)
 }
 

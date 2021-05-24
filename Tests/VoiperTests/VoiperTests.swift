@@ -49,5 +49,5 @@ class MockPresenter: TestPresenterProtocol {
 }
 
 class MockRouter: TestRouterProtocol {
-    var viewController: UIViewController!
+    var viewController: UIViewController?
 }
