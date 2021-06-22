@@ -1,9 +1,9 @@
 
 public typealias Presenter = PresenterClass & PresenterType & Injectable
 open class PresenterClass: PresenterProtocol {
-    public weak var _viewDelegate: ViewControllerProtocol?
-    public var _interactor: InteractorProtocol?
-    public var _router: RouterProtocol?
+    public private(set) weak var _viewDelegate: ViewControllerProtocol?
+    public private(set) var _interactor: InteractorProtocol?
+    public private(set) var _router: RouterProtocol?
     
     public func set(viewDelegate: ViewControllerProtocol) {
         self._viewDelegate = viewDelegate
@@ -40,14 +40,14 @@ public protocol PresenterType {
     var _viewDelegate: ViewControllerProtocol? {get}
     var _interactor: InteractorProtocol? {get}
     var _router: RouterProtocol? {get}
-    var viewDelegate: ViewDelegateType {get}
+    var viewDelegate: ViewDelegateType? {get}
     var interactor: InteractorType {get}
     var router: RouterType {get}
 }
 
 public extension PresenterType {
-    var viewDelegate: ViewDelegateType {
-        return (_viewDelegate as! ViewDelegateType)
+    var viewDelegate: ViewDelegateType? {
+        return _viewDelegate as? ViewDelegateType
     }
     
     var interactor: InteractorType {
