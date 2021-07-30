@@ -111,3 +111,15 @@ extension Organiser where Presenter.Configuration == Void, Interactor.Configurat
                             router: Router.init(configuration: ()))
     }
 }
+
+extension Organiser where Presenter: Embeddable, ViewController: ViewControllerType {
+    public static func createAsChildModule(presenterConfiguration: Presenter.Configuration, interactorConfiguration: Interactor.Configuration, routerConfiguration: Router.Configuration) -> (UIViewController, Presenter.ParentControllable) {
+        let vc = wireUpModule(presenter: Presenter(configuration: presenterConfiguration),
+                              interactor: Interactor(configuration: interactorConfiguration),
+                              router: Router(configuration: routerConfiguration))
+        guard let parentControllable = vc.presenter as? Presenter.ParentControllable else {
+            fatalError("")
+        }
+        return (vc, parentControllable)
+    }
+}
