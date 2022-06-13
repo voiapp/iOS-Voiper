@@ -1,5 +1,6 @@
 
 public typealias Presenter = PresenterClass & PresenterType & Injectable
+public typealias AsyncPresenter = PresenterClass & PresenterType & AsyncInjectable
 open class PresenterClass: PresenterProtocol {
     public private(set) weak var _viewDelegate: ViewControllerProtocol?
     public private(set) var _interactor: InteractorProtocol?

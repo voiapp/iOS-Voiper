@@ -10,8 +10,19 @@ public protocol Injectable {
     init(configuration: Configuration)
 }
 
+public protocol AsyncInjectable {
+    associatedtype Configuration
+    init(configuration: Configuration) async
+}
+
 extension Injectable where Configuration == Void {
     init() {
         self.init(configuration: ())
+    }
+}
+
+extension AsyncInjectable where Configuration == Void {
+    init() async {
+        await self.init(configuration: ())
     }
 }
