@@ -1,6 +1,7 @@
 import UIKit
 
 public typealias Router = RouterClass & Injectable
+public typealias AsyncRouter = RouterClass & AsyncInjectable
 open class RouterClass: RouterProtocol {
     public weak var viewController: UIViewController?
     
