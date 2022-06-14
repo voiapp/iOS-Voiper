@@ -15,16 +15,16 @@ public protocol AsyncOrganiser {
 }
 
 extension AsyncOrganiser {
-    public static func createModule(presenterConfiguration: Presenter.Configuration,
-                                    interactorConfiguration: Interactor.Configuration,
-                                    routerConfiguration: Router.Configuration) async -> ViewController {
+    @MainActor public static func createModule(presenterConfiguration: Presenter.Configuration,
+                                               interactorConfiguration: Interactor.Configuration,
+                                               routerConfiguration: Router.Configuration) async -> ViewController {
         let presenter = await Presenter.init(configuration: presenterConfiguration)
         let interactor = await Interactor.init(configuration: interactorConfiguration)
         let router = await Router.init(configuration: routerConfiguration)
         return wireUpModule(presenter: presenter, interactor: interactor, router: router)
     }
 
-    private static func wireUpModule(presenter: Presenter, interactor: Interactor, router: Router) -> ViewController {
+    @MainActor private static func wireUpModule(presenter: Presenter, interactor: Interactor, router: Router) -> ViewController {
         let viewController = ViewController.instantiate()
         presenter.set(viewDelegate: viewController)
         presenter.set(router: router)
