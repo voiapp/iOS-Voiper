@@ -5,6 +5,7 @@
 //  Created by Mayur Deshmukh on 2020-07-27.
 //
 
+/// `Injectable` gurantees a that any type conforming to this protocol, shall have an initializer taking all required parameters wrapped in a Configuration
 public protocol Injectable {
     associatedtype Configuration
     init(configuration: Configuration)
@@ -16,6 +17,7 @@ public protocol AsyncInjectable {
 }
 
 extension Injectable where Configuration == Void {
+    /// Convenience initialiser when the Configuration of the Injectable is Void
     init() {
         self.init(configuration: ())
     }

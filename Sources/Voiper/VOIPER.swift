@@ -1,6 +1,13 @@
 import UIKit
 
+/// Instantiable is a protocol whose conformance allows Voiper to Instantiate the conforming UIViewController.
+///
+/// To be used when ViewController is developed programmatically instead of Storyboard. For ViewControllers designed in Storyboard, use StoryboardInstantiable.
+/// If Xib is used the method could be overridden to provide initialisation through XIB
 public protocol Instantiable: UIViewController {
+    /// Method that returns instance of the conforming type
+    ///
+    /// The default implementation simply invokes the init method of the type. It can be overridden to provide any other initialisation behaviour.
     static func instantiate() -> Self
 }
 
@@ -10,9 +17,24 @@ public extension Instantiable {
     }
 }
 
+/// StoryboardInstantiable is a protocol whose conformance allows Voiper to Instantiate the conforming UIViewController from Storyboard.
+///
+/// The default implementation uses storyboardName and ViewControllerName to instantiate the conforming ViewController.
+/// Default implementation of StoryboardInstantiable.viewControllerName provides the name of the Type. This is used as Storyboard identifier. If your Storyboard
+/// identifier is not the same as the name of the Type of the ViewController, override viewControllerName to provide the storyboard identifier.
+///
+/// **IMPORTANT:**
+/// If the storyboardName does not have a corresponding storyboard file and/or does not contain a UIViewController or a subclass of UIViewController with
+/// viewControllerName as it's storyboard identifier, it might result into crash. Thus important to have module creation tests.
 public protocol StoryboardInstantiable: Instantiable {
+    /// Name of the Storyboard file, that contains the conforming ViewController
     static var storyboardName: String { get }
+    
+    /// The storyboard identifier of the conforming ViewController. Default implementation takes name of the conforming Type as the Storyboard identifier.
+    /// Override to provide custom identifier.
     static var viewControllerName: String { get }
+    
+    /// The default implementation uses storyboardName and ViewControllerName to instantiate the conforming ViewController.
     static func instantiateFromStoryboard() -> Self
 }
 
@@ -39,12 +61,22 @@ public protocol Organiser {
 }
 
 extension Organiser {
+    /// The method that creates a module, by instantiating and setting up all the VIPR components
+    /// - Parameters:
+    ///   - presenterConfiguration: Configuration of the Presenter of the module. Usually these are entities required for the module to function, passed
+    ///   on by other modules
+    ///   - interactorConfiguration: Configuration of the Interactor of the module. Usually these will be tuple of Services, required by the interactor to
+    ///   serve the Presenter with required information
+    ///   - routerConfiguration: Configuration of the Router of the module. Usually these will be a bag of dependencies required to initialise the
+    ///   subsequent modules before navigating to them
+    /// - Returns: ViewController object that has all the adjacent and subsequent VIPR components set.
     public static func createModule(presenterConfiguration: Presenter.Configuration, interactorConfiguration: Interactor.Configuration, routerConfiguration: Router.Configuration) -> ViewController {
         return wireUpModule(presenter: Presenter.init(configuration: presenterConfiguration),
                             interactor: Interactor.init(configuration: interactorConfiguration),
                             router: Router.init(configuration: routerConfiguration))
     }
     
+    /// Function that sets the VIPR component to each other
     private static func wireUpModule(presenter: Presenter, interactor: Interactor, router: Router) -> ViewController {
         let viewController = ViewController.instantiate()
         presenter.set(viewDelegate: viewController)
@@ -57,6 +89,7 @@ extension Organiser {
 }
 
 extension Organiser where Presenter.Configuration == Void {
+    /// Convenience function that does not need Presenter.Configuration if it is Void
     public static func createModule(interactorConfiguration: Interactor.Configuration, routerConfiguration: Router.Configuration) -> ViewController {
         return wireUpModule(presenter: Presenter.init(configuration: ()),
                             interactor: Interactor.init(configuration: interactorConfiguration),
@@ -65,6 +98,7 @@ extension Organiser where Presenter.Configuration == Void {
 }
 
 extension Organiser where Interactor.Configuration == Void {
+    /// Convenience function that does not need Presenter.Configuration if it is Void
     public static func createModule(presenterConfiguration: Presenter.Configuration, routerConfiguration: Router.Configuration) -> ViewController {
         return wireUpModule(presenter: Presenter.init(configuration: presenterConfiguration),
                             interactor: Interactor.init(configuration: ()),
@@ -73,6 +107,7 @@ extension Organiser where Interactor.Configuration == Void {
 }
 
 extension Organiser where Router.Configuration == Void {
+    /// Convenience function that does not need Router.Configuration if it is Void
     public static func createModule(presenterConfiguration: Presenter.Configuration, interactorConfiguration: Interactor.Configuration) -> ViewController {
         return wireUpModule(presenter: Presenter.init(configuration: presenterConfiguration),
                             interactor: Interactor.init(configuration: interactorConfiguration),
@@ -81,6 +116,7 @@ extension Organiser where Router.Configuration == Void {
 }
 
 extension Organiser where Presenter.Configuration == Void, Interactor.Configuration == Void {
+    /// Convenience function that does not need Presenter.Configuration and Interactor.Configuration if they are Void
     public static func createModule(routerConfiguration: Router.Configuration) -> ViewController {
         return wireUpModule(presenter: Presenter.init(configuration: ()),
                             interactor: Interactor.init(configuration: ()),
@@ -89,6 +125,7 @@ extension Organiser where Presenter.Configuration == Void, Interactor.Configurat
 }
 
 extension Organiser where Presenter.Configuration == Void, Router.Configuration == Void {
+    /// Convenience function that does not need Presenter.Configuration and Router.Configuration if they are Void
     public static func createModule(interactorConfiguration: Interactor.Configuration) -> ViewController {
         return wireUpModule(presenter: Presenter.init(configuration: ()),
                             interactor: Interactor.init(configuration: interactorConfiguration),
@@ -97,6 +134,7 @@ extension Organiser where Presenter.Configuration == Void, Router.Configuration 
 }
 
 extension Organiser where Interactor.Configuration == Void, Router.Configuration == Void {
+    /// Convenience function that does not need Interactor.Configuration and Router.Configuration if they are Void
     public static func createModule(presenterConfiguration: Presenter.Configuration) -> ViewController {
         return wireUpModule(presenter: Presenter.init(configuration: presenterConfiguration),
                             interactor: Interactor.init(configuration: ()),
@@ -105,6 +143,7 @@ extension Organiser where Interactor.Configuration == Void, Router.Configuration
 }
 
 extension Organiser where Presenter.Configuration == Void, Interactor.Configuration == Void, Router.Configuration == Void {
+    /// Convenience function that does not need any parameters if Presenter.Configuration, Interactor.Configuration and Router.Configuration are Void
     public static func createModule() -> ViewController {
         return wireUpModule(presenter: Presenter.init(configuration: ()),
                             interactor: Interactor.init(configuration: ()),
