@@ -150,3 +150,31 @@ extension Organiser where Presenter.Configuration == Void, Interactor.Configurat
                             router: Router.init(configuration: ()))
     }
 }
+
+extension Organiser where Presenter: Embeddable, ViewController: ViewControllerType {
+    public static func createAsChildModule(presenterConfiguration: Presenter.Configuration, interactorConfiguration: Interactor.Configuration, routerConfiguration: Router.Configuration) -> (UIViewController, Presenter.ParentControllable) {
+        let childViewController = wireUpModule(presenter: Presenter(configuration: presenterConfiguration),
+                                               interactor: Interactor(configuration: interactorConfiguration),
+                                               router: Router(configuration: routerConfiguration))
+        guard let parentControllable = childViewController.presenter as? Presenter.ParentControllable else {
+            // TODO: it should be fixed, we should think about how to handle it in the best way
+            // make optional or throw error or smth else?
+            fatalError("")
+        }
+        return (childViewController, parentControllable)
+    }
+}
+
+extension Organiser where Presenter: Embeddable, ViewController: ViewControllerType, Presenter.Configuration == Void, Interactor.Configuration == Void, Router.Configuration == Void {
+    public static func createAsChildModule(presenterConfiguration: Presenter.Configuration, interactorConfiguration: Interactor.Configuration, routerConfiguration: Router.Configuration) -> (UIViewController, Presenter.ParentControllable) {
+        let childViewController = wireUpModule(presenter: Presenter(configuration: ()),
+                                               interactor: Interactor(configuration: ()),
+                                               router: Router(configuration: ()))
+        guard let parentControllable = childViewController.presenter as? Presenter.ParentControllable else {
+            // TODO: it should be fixed, we should think about how to handle it in the best way
+            // make optional or throw error or smth else?
+            fatalError("")
+        }
+        return (childViewController, parentControllable)
+    }
+}
